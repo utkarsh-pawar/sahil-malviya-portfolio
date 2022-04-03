@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import "../App.css";
 import { motion } from "framer-motion";
 import image from "../assets/marco-segatto--8D5zVdPxpA-unsplash.jpg";
+import small from "../assets/small.jpg";
+import large from "../assets/large.jpg";
+import useProgressiveImg from "../custom-hook/useProgressiveImg";
 
 let text1 = ["Hello.", "About"];
 let text2 = ["I am", "Work"];
 let text3 = ["Sahil", "Contact"];
 
 const Landing = () => {
- 
+  const [src, { blur }] = useProgressiveImg(small, large);
+
   const [index, setIndex] = useState(true);
   const [height, setHeight] = useState(0);
 
@@ -30,7 +34,7 @@ const Landing = () => {
   }
 
   useEffect(() => {
-    setHeight(window.screen.availWidth)
+    setHeight(window.screen.availWidth);
     console.log(height);
   }, []);
 
@@ -40,7 +44,12 @@ const Landing = () => {
       onClick={() => {
         setIndex((prevIndex) => !prevIndex);
       }}
-      style={{ background: `url(${image})`, height: `100vh` }}
+      style={{
+        background: `url(${src})`,
+        height: `100vh`,
+        filter: blur ? "blur(1px)" : "none",
+        transition: blur ? "none" : "filter 0.3s ease-out",
+      }}
     >
       {index ? (
         <div className="landing-card">
